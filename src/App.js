@@ -24,9 +24,6 @@ function App() {
   const handleSendCoins = async (e) => {
     e.preventDefault();
     try {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
       const to = document.getElementById("to").value;
       const amount = Number(document.getElementById("amount").value);
 
