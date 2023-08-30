@@ -1,8 +1,8 @@
 import logo from "./coin-svgrepo-com.svg";
 import "./App.css";
-import { ethereum } from "./metamask";
-import { ethersContract } from "./web3";
 import { useState } from "react";
+import { ethers } from "ethers";
+import ERC20ABI from "./abiv2.json";
 
 function App() {
   let errorMsg = "";
@@ -11,6 +11,7 @@ function App() {
   const handleConnectWallet = async (e) => {
     e.preventDefault();
     try {
+      const ethereum = window.ethereum;
       const account = await ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -24,6 +25,16 @@ function App() {
   const handleSendCoins = async (e) => {
     e.preventDefault();
     try {
+      const ethersProvider = new ethers.BrowserProvider(window.ethereum);
+
+      let ethersSigner = await ethersProvider.getSigner();
+
+      const ethersContract = new ethers.Contract(
+        "0x39EBaE68AE22ddc7BEceA83B30799AaC2b7B1CD2",
+        ERC20ABI,
+        ethersSigner
+      );
+
       const to = document.getElementById("to").value;
       const amount = Number(document.getElementById("amount").value);
 
